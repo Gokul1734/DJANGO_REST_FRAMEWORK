@@ -1,4 +1,6 @@
-from rest_framework import generics, mixins, permissions
+from rest_framework import generics, mixins, permissions, authentication
+
+from api.authentication import CustomTokenAuthentication
 
 from .models import Product
 from .serializers import productSerializer
