@@ -1,17 +1,29 @@
-from rest_framework import generics, permissions
+from rest_framework import viewsets 
 from .models import Product
 from .serializers import productSerializer
 
-
-class ProductCreateAPIVIew(generics.CreateAPIView):
+class ProductViewSet(viewsets.ModelViewSet):
+   '''
+      get -> list -> QuerySet
+      get -> retrieve -> Product Instance Detail View
+      post -> create -> Product Instance
+      put -> update -> Product Instance
+      patch -> partial_update -> Product Instance
+      delete -> destroy -> Product Instance
+   '''
    queryset = Product.objects.all()
    serializer_class = productSerializer
-   permission_classes = [permissions.IsAuthenticated]
-   
-   def perform_create(self, serializer):
-      print(serializer.validated_data)
-      title = serializer.validated_data.get('title')
-      content = serializer.validated_data.get('content') or None
-      if content is None:
-         content = title
-      serializer.save(content=content)
+   lookup_field = 'pk'
+
+class ProductGenericViewSet(viewsets.GenericViewSet, 
+            viewsets.mixins.ListModelMixin,
+            viewsets.mixins.RetrieveModelMixin,
+            viewsets.mixins.CreateModelMixin,
+            viewsets.mixins.UpdateModelMixin,
+            viewsets.mixins.DestroyModelMixin):
+   queryset = Product.objects.all()
+   serializer_class = productSerializer
+   lookup_field = 'pk'
+
+product_list_view = ProductViewSet.as_view({'get': 'list'})
+product_detail_view = ProductViewSet.as_view({'get': 'retrieve'})
