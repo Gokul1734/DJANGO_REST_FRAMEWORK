@@ -4,12 +4,16 @@ from .models import Product
 
 class productSerializer(serializers.ModelSerializer):
    url = serializers.SerializerMethodField(read_only=True)
+   email = serializers.EmailField(write_only=True)
+
    class Meta:
       model = Product
       fields = [
+         'user',
          'url',
          'pk',
          "title",
+         "email",
          "content",
          "price",
          "sale_price"
