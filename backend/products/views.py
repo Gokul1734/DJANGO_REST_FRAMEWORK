@@ -1,4 +1,4 @@
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions
 
 from .models import Product
 from .serializers import productSerializer
@@ -48,37 +48,39 @@ ProductMixinView = ProductMixinReview.as_view()
 
 
 
-# class ProductCreateAPIVIew(generics.CreateAPIView):
-#    queryset = Product.objects.all()
-#    serializer_class = productSerializer
+class ProductCreateAPIVIew(generics.CreateAPIView):
+   queryset = Product.objects.all()
+   serializer_class = productSerializer
+   permission_classes = [permissions.IsAuthenticated]
    
-#    def perform_create(self, serializer):
-#       print(serializer.validated_data)
-#       title = serializer.validated_data.get('title')
-#       content = serializer.validated_data.get('content') or None
-#       if content is None:
-#          content = title
-#       serializer.save(content=content)
+   def perform_create(self, serializer):
+      print(serializer.validated_data)
+      title = serializer.validated_data.get('title')
+      content = serializer.validated_data.get('content') or None
+      if content is None:
+         content = title
+      serializer.save(content=content)
 
 # class ProductDetailAPIView(generics.RetrieveAPIView):
 #    queryset = Product.objects.all()
 #    serializer_class = productSerializer
 
-# class ProductListCreateAPIVIew(generics.ListCreateAPIView):
-#    queryset = Product.objects.all()
-#    serializer_class = productSerializer
+class ProductListCreateAPIVIew(generics.ListCreateAPIView):
+   queryset = Product.objects.all()
+   serializer_class = productSerializer
+   permission_classes = [permissions.IsAuthenticated]
    
-#    def perform_create(self, serializer):
-#       print(serializer.validated_data)
-#       title = serializer.validated_data.get('title')
-#       content = serializer.validated_data.get('content') or None
-#       if content is None:
-#          content = title
-#       serializer.save(content=content)
+   def perform_create(self, serializer):
+      print(serializer.validated_data)
+      title = serializer.validated_data.get('title')
+      content = serializer.validated_data.get('content') or None
+      if content is None:
+         content = title
+      serializer.save(content=content)
    
-# product_list_create_view = ProductListCreateAPIVIew.as_view()
+product_list_create_view = ProductListCreateAPIVIew.as_view()
 
-# product_create_view = ProductCreateAPIVIew.as_view()
+product_create_view = ProductCreateAPIVIew.as_view()
 
 # product_detail_view = ProductDetailAPIView.as_view()
 
