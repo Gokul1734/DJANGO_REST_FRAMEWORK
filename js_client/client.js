@@ -8,7 +8,7 @@ if (loginForm) {
 async function handleLogin(event) {
    event.preventDefault();
 
-   const loginEndPoint = `${basepoint}/auth/`;
+   const loginEndPoint = `${basepoint}/token/`;
    const loginFormData = new FormData(loginForm);
    const ObjectData = Object.fromEntries(loginFormData);
 
@@ -24,8 +24,8 @@ async function handleLogin(event) {
       const response = await fetch(loginEndPoint, options);
       if (response.ok) {
          const data = await response.json();
-         console.log(data.token);
-         localStorage.setItem('access', data.token);
+         console.log(data);
+         localStorage.setItem('access', data.access);
       } else {
          console.error("Login failed", response.status);
       }
@@ -48,7 +48,7 @@ async function fetchProducts(event) {
       const response = await fetch(productsEndPoint, options);
       if (response.ok) {
          const data = await response.json();
-         console.log(data);
+         console.log(data.results);
       }
    }catch(err) {
       console.error("err", err);
